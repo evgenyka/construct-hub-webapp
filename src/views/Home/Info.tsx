@@ -39,8 +39,8 @@ export const Info: FunctionComponent = () => (
       textAlign="left"
     >
       <InfoSection
-        description=" For all three CDKs: AWS CDK, which generates CloudFormation templates, CDK for Terraform (CDKtf), which generates HashiCorp Terraform configuration, and CDK for Kubernetes (CDK8s), which generates Kubernetes manifests."
-        title="A single home for all CDKs"
+        description="Find libraries for AWS Cloud Development Kit (AWS CDK), which generates AWS CloudFormation templates, CDK for Terraform (CDKtf), which generates HashiCorp Terraform configuration files, and CDK for Kubernetes (CDK8s), which generates Kubernetes manifests."
+        title="One home for all CDKs"
       >
         <Flex align="center" pt={4} sx={{ gap: "4rem" }} wrap="wrap">
           {Object.entries(CDKTYPE_RENDER_MAP).map(
