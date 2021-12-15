@@ -21,6 +21,6 @@ phases:
       - npx cypress info
   build:
     commands:
-      - npm run proxy:ci &
+      - npm run proxy-server:ci &
       - npx cypress run --record
       - echo "Here is where I would upload the results to S3"
