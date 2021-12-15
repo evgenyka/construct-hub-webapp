@@ -78,6 +78,7 @@ const project = new web.ReactTypeScriptProject({
     "eslint-plugin-react-hooks",
     "eslint-plugin-react",
     "react-app-rewired",
+    "start-server-and-test",
   ],
 
   autoApproveOptions: {

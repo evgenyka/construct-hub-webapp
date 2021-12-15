@@ -21,6 +21,5 @@ phases:
       - npx cypress info
   build:
     commands:
-      - npm run proxy-server:ci &
-      - npx cypress run --record
+      - npx start-server-and-test proxy-server:ci http://localhost:3000 cypress:run
       - echo "Here is where I would upload the results to S3"
