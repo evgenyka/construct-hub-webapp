@@ -1,10 +1,14 @@
 import { Flex } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { NavItem } from "./NavItem";
-import type { NavItemConfig } from "./types";
+import type { GetIsActiveItemFunction, NavItemConfig } from "./types";
 
 export interface NavTreeProps {
   "data-event"?: string;
+  /**
+   * Function to evaluate if an item is currently active
+   */
+  getIsActiveItem?: GetIsActiveItemFunction;
   /**
    * Items to render
    */
@@ -14,6 +18,7 @@ export interface NavTreeProps {
 
 export const NavTree: FunctionComponent<NavTreeProps> = ({
   "data-event": dataEvent,
+  getIsActiveItem,
   items,
   variant,
 }) => {
@@ -24,6 +29,7 @@ export const NavTree: FunctionComponent<NavTreeProps> = ({
           <NavItem
             {...item}
             data-event={dataEvent}
+            getIsActiveItem={getIsActiveItem}
             key={idx}
             level={0}
             onOpen={undefined}

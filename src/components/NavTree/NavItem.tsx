@@ -1,10 +1,9 @@
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton, useDisclosure } from "@chakra-ui/react";
 import { FunctionComponent, useMemo } from "react";
-import { useLocation } from "react-router-dom";
 import { clickEvent, eventName, useAnalytics } from "../../contexts/Analytics";
 import { NavItemWrapper } from "./NavItemWrapper";
-import type { NavItemConfig } from "./types";
+import type { GetIsActiveItemFunction, NavItemConfig } from "./types";
 
 const navTreeEvent = (scope: string, event: string) =>
   eventName(scope, "NavTree", event);
@@ -17,6 +16,7 @@ const iconProps = {
 
 export interface NavItemProps extends NavItemConfig {
   // The following props don't need to be explicitly defined - they are passed internally
+  getIsActiveItem?: GetIsActiveItemFunction;
   onOpen?: () => void;
   level: number;
   variant?: "sm" | "md";
@@ -24,6 +24,8 @@ export interface NavItemProps extends NavItemConfig {
 export const NavItem: FunctionComponent<NavItemProps> = ({
   children,
   "data-event": dataEvent,
+  getIsActiveItem,
+  id,
   title,
   path,
   level,
@@ -33,11 +35,14 @@ export const NavItem: FunctionComponent<NavItemProps> = ({
   const { trackCustomEvent } = useAnalytics();
   const defaultIsOpen = level < 2; // only show first two levels by default
   const disclosure = useDisclosure({ onOpen, defaultIsOpen });
-  const { hash, pathname } = useLocation();
-  const pathUrl = new URL(path ?? "", window.origin);
-  const linkIsActive = path?.includes("/api/")
-    ? pathUrl.pathname === pathname
-    : pathUrl.hash && hash && pathUrl.hash === hash;
+
+  const linkIsActive =
+    getIsActiveItem?.({
+      id,
+      title,
+      path,
+      children,
+    }) ?? false;
 
   const showToggle = (children?.length ?? 0) > 0;
   const showChildren = disclosure.isOpen && showToggle;
@@ -49,6 +54,7 @@ export const NavItem: FunctionComponent<NavItemProps> = ({
           <NavItem
             data-event={dataEvent}
             {...item}
+            getIsActiveItem={getIsActiveItem}
             key={idx}
             level={level + 1}
             onOpen={disclosure.onOpen}
@@ -56,7 +62,7 @@ export const NavItem: FunctionComponent<NavItemProps> = ({
           />
         );
       }),
-    [children, dataEvent, disclosure.onOpen, variant, level]
+    [children, dataEvent, getIsActiveItem, level, disclosure.onOpen, variant]
   );
 
   return (
